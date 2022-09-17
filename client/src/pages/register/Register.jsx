@@ -21,7 +21,7 @@ export default function Register() {
       userData.append("email",email);
       userData.append("password",password);
       userData.append("profile",profile);
-     const res = await axios.post(`http://localhost:5000/api/auth/register`, userData, config);
+     const res = await axios.post(`/auth/register`, userData, config);
       res.data && window.location.replace("/login");
     } catch (err) {
       setError(true);

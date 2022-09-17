@@ -14,7 +14,7 @@ const [postsPerPage,setPostsPerPage]=useState(6);
   const searchSubmitHandler = async(e) => {
         e.preventDefault();
         
-         await axios.get("http://localhost:5000/api/search", { params: { keyword } }).then((result)=>
+         await axios.get("/search", { params: { keyword } }).then((result)=>
         {
           if(result.data.searchedValues){
           setBlogs(result.data.searchedValues);
