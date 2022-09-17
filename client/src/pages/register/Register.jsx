@@ -1,0 +1,87 @@
+import axios from "axios";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import "./register.css"; 
+import image from "../../images/user.png";
+
+export default function Register() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [profile,setProfile]=useState();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(false);
+    try {
+
+      const config = { headers: { "Content-Type": "multipart/form-data" } };
+      let userData=new FormData();
+      userData.append("username",username);
+      userData.append("email",email);
+      userData.append("password",password);
+      userData.append("profile",profile);
+     const res = await axios.post(`http://localhost:5000/api/auth/register`, userData, config);
+      res.data && window.location.replace("/login");
+    } catch (err) {
+      setError(true);
+    }
+  };
+  const handleChange=async(e)=>
+  {
+        const reader = new FileReader();
+  
+        reader.onload = () => {
+          if (reader.readyState === 2) {
+            setProfile(reader.result);
+          }
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    };
+  return (
+    <div className="register">
+      <span className="registerTitle">Register</span>
+      <form className="registerForm" onSubmit={handleSubmit}>
+        <label>Username</label>
+        <input
+          type="text"
+          className="registerInput"
+          placeholder="Enter your username..."
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <label>Email</label>
+        <input
+          type="text"
+          className="registerInput"
+          placeholder="Enter your email..."
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <label>Password</label>
+        <input
+          type="password"
+          className="registerInput"
+          placeholder="Enter your password..."
+          onChange={(e) => setPassword(e.target.value)}
+        />
+         <div id="registerImage">
+                  <img src={profile||image} alt="Avatar Preview"  />
+                  <input
+                    type="file"
+                    name="avatar"
+                    accept="image/*"
+                    onChange={handleChange}
+                  />
+                </div>
+        <button className="registerButton" type="submit">
+          Register
+        </button>
+      </form>
+      <button className="registerLoginButton">
+        <Link className="link" to="/login">
+          Login
+        </Link>
+      </button>
+      {error && <span style={{color:"red", marginTop:"10px"}}>Something went wrong!</span>}
+    </div>
+  );
+}
