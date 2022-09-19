@@ -5,7 +5,7 @@ export default function Comment({ comment }) {
   return (
     <div className="cmnt">
       <div className="postInfo">
-          <span className="cmntTitle">{comment.user}</span>
+    <Link to={`/?user=${comment.user}`} className="link"> <b> <span className="cmntTitle">{comment.user}</span></b> </Link>
         <hr />
         <span className="cmntDate">
           {new Date(comment.createdAt).toDateString()}
