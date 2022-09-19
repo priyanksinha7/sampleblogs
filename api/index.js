@@ -48,11 +48,11 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
   res.status(200).json("File has been uploaded");
 });
 
-app.use("/api/auth", authRoute);
-app.use("/api/users", userRoute);
-app.use("/api/posts", postRoute);
-app.use("/api/categories", categoryRoute);
-app.use("/api/search", searchBlog);
+app.use("/auth", authRoute);
+app.use("/users", userRoute);
+app.use("/posts", postRoute);
+app.use("/categories", categoryRoute);
+app.use("/search", searchBlog);
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 
