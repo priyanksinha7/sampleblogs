@@ -23,6 +23,24 @@ const PostSchema = new mongoose.Schema(
       type: Array,
       required: false,
     },
+    comments: [
+      {
+        user: {
+          type: String,
+          ref: "User",
+          required: true,
+        },
+        comment: {
+          type: String,
+          required: true,
+        },
+         createdAt:
+         { 
+          type: Date,
+          default: Date.now()
+         }
+      },
+    ],
   },
   { timestamps: true }
 );

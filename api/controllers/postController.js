@@ -16,6 +16,31 @@ module.exports.createPost= async (req, res) => {
 
 
 
+  module.exports.addComment= async (req, res) => {
+    
+    try {
+      const post = await Post.findById(req.params.id);
+        try {
+          const comment=
+          {
+              user: req.body.username,
+              comment: req.body.comment
+          }
+          post.comments.push(comment);
+          await post.save();
+          res.status(200).json(
+            {
+              success: true
+            }
+          );
+        } catch (err) {
+          res.status(500).json(err);
+        }
+    } catch (err) {
+      res.status(500).json(err);
+    }
+    return;
+  }
 
 
 

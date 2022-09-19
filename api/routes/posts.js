@@ -1,11 +1,11 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const Post = require("../models/Post");
-const { getAllPosts, getPost, deletePost, createPost, updatePost } = require("../controllers/postController");
+const { getAllPosts, getPost, deletePost, createPost, updatePost, addComment } = require("../controllers/postController");
 
 //CREATE POST
 router.post("/",createPost);
-
+router.post("/:id/comment",addComment);
 //UPDATE POST
 router.put("/:id",updatePost);
 
