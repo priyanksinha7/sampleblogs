@@ -3,7 +3,9 @@ import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { Context } from "../../context/Context";
+import { Container } from "react-bootstrap";
 import "./singlePost.css";
+import Comments from "../Comments/comments";
 
 export default function SinglePost() {
   const location = useLocation();
@@ -14,18 +16,35 @@ export default function SinglePost() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [updateMode, setUpdateMode] = useState(false);
-
+   const [comment,setComment]=useState();
+   const [count,setCount]=useState();
   useEffect(() => {
     const getPost = async () => {
       const res = await axios.get("/posts/" + path);
       setPost(res.data);
       setTitle(res.data.title);
       setDesc(res.data.desc);
+      setCount(res.data.comments.length);
     };
     getPost();
   }, [path]);
 
+
+  const handleComment=async(e)=>
+  {
+    e.preventDefault();
+    console.log("asm");
+    try{
+      const config = { headers: { "Content-Type": "multipart/form-data" } };
+      let userData=new FormData();
+      userData.append("username",user.username);
+      userData.append("comment",comment);
+        await axios.post(`/posts/${post._id}/comment`, userData, config);
+    window.location.replace(`/post/${post._id}`);
+  } catch (err) {}
+}
   const handleDelete = async () => {
+  
     try {
       await axios.delete(`/posts/${post._id}`, {
         data: { username: user.username },
@@ -102,6 +121,31 @@ export default function SinglePost() {
           </button>
         )}
       </div>
+      {user&&<Container>
+      <form className="commentForm" onSubmit={handleComment}>
+        <div className="commentFormGroup">
+          <textarea
+            placeholder="Your Comment..."
+            type="text"
+            className="commentInput commentText"
+            onChange={(e)=>
+            {
+              setComment(e.target.value);
+            }}
+          ></textarea>
+        </div>
+        <button className="writeSubmit" type="submit">
+          Comment
+        </button>
+      </form>
+      </Container>}
+      {
+        count&&
+      <Container>
+        <Comments comments={post.comments}/>
+      </Container>
+      }
+
     </div>
   );
 }

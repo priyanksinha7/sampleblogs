@@ -1,0 +1,9 @@
+.comments{
+    flex: 9;
+    display: flex;
+    margin: 20px;
+}
+.h3head
+{
+    font-family: "Varela Round", sans-serif;
+}
